@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>智能建筑安全生产监管平台</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <!-- <link rel="stylesheet" href="css/comon0.css"> -->
+    <script src="js/inflate.min.js"></script>
+    <script src="js/three.js"></script>
+    <script src="js/stats.min.js"></script>
+    <script src="js/dat.gui.min.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script src="js/OBJLoader.js"></script>
+    <script src="js/EffectComposer.js"></script>
+    <script src="js/RenderPass.js"></script>
+    <script src="js/ShaderPass.js"></script>
+    <script src="js/OutlinePass.js"></script>
+    <script src="js/FXAAShader.js"></script>
+    <script src="js/CopyShader.js"></script>
+    <script src="../js/echarts.min.js"></script>
+
+  
+</head>
+
+<body>
+    <div id="plan"><img class="jingbao" src="../three.js/img/jingbao.png" style="width:200px; height:200px;">
+        <p id="ljcl">警报!3号楼塔吊链接处有松动危险，请立即处理!</p>
+    </div>
+
+    <div class="tixing">
+        <h1 style="font-size: 30px;">湘潭大学艺术大楼一期项目建设</h1>
+        <div id="mytime"></div>
+        <div id="weather"><iframe allowtransparency="true" frameborder="0" width="317" height="28" scrolling="no"
+                src="//tianqi.2345.com/plugin/widget/index.htm?s=3&z=1&t=1&v=0&d=1&bd=0&k=000000&f=ffffff&ltf=ffffff&htf=ff0000&q=1&e=0&a=0&c=57773&w=317&h=28&align=center"></iframe>
+        </div>
+        <div class="daohang"> <a href="demo.html">返回</a> 
+        <div id="YHxiangxixinxi">
+            <p class="alltitle1">报警信息 </p>
+            <div class="juti">
+                <p style="text-align: center;color: rgb(238, 23, 23);font-size: 25px;margin-bottom: 20px;">塔吊有松动危险!</p>
+                <p>危险等级：一级</p>
+                <p>位置：3号楼塔吊连接处</p>
+                <p>报警传感器：倾角传感器C21</p>
+                <p>报警代码：#XX51XX</p>
+                <div class="baojingtadiao">
+                    <img src="../three.js/models/fbx/tdyh1.jpg" style="width: 100px;height: 100px;margin-right:20px;">
+                    <img src="../three.js/models/fbx/tdyh1.jpg" style="width: 100px;height: 100px;margin-right:20px;">
+                    <img src="../three.js/models/fbx/tdyh1.jpg" style="width: 100px;height: 100px;margin-right:20px;">
+                    <img src="../three.js/models/fbx/tdyh1.jpg" style="width: 100px;height: 100px;margin-right:20px;">
+
+                </div>
+            </div>
+        </div>
+        <div id="chuli">
+            <p class="alltitle1">处理 </p>
+            <div id="wanbi" style="display: none;">
+                <span id="yichuli" style="color: rgb(2, 245, 2);display: flex;">已处理</span>
+                <p>处理人：张军</p>
+                <p>处理时间：<span id="mytime1"></span></p>
+            </div>
+           
+            <div class="juti" id="juti1" >
+                <p style="text-align: center;color: rgb(7, 255, 234);;font-size: 20px;margin-bottom: 50px;">选定巡检人员</p>
+                <div id="renyuan">
+                    <ul>
+                        <li><img id="img1" src="../three.js/models/fbx/ren.jpg" style="width: 100px;height: 100px;border-radius:50px;"><p>李晓阳</p><br><p style="top: 195px;font-size: 8px;color: rgb(0, 0, 212);">在线</p></li>
+                        <li><img id="img2" src="../three.js/models/fbx/ren1.jpg" style="width: 100px;height: 100px;border-radius:50px;"><p>管成</p><p style="top: 195px;font-size: 8px;color: rgb(0, 0, 212);">在线</p></li>
+                        <li><img id="img3" src="../three.js/models/fbx/ren2.jpg" style="width: 100px;height: 100px;border-radius:50px;"><p style="color: rgb(110, 110, 110);">胡好</p><p style="top: 195px;font-size: 8px;color:rgb(110, 110, 110)">离线</p></li>
+                    </ul>
+                </div>
+                <div id="shuruk">
+                    <td><textarea name="skd" placeholder="请输入处理意见..." id="stext" style="OVERFLOW:hidden ;font-size: 18px ;width: 400px;height: 200px;background-color: rgb(15, 15, 66);color: rgb(212, 212, 212);border: none;"></textarea></td>
+                </div>
+                <div id="button1"><p id="button2">立即发送</p></div>
+            </div>
+        </div>
+        
+    </div>
+    
+
+        <script>
+
+            var container, stats, outlinePass, controls;
+            var camera, scene, renderer, renderPass, composer, outlinePass2, composer2, array = [], light, mixer2,array1=[];
+
+            var clock = new THREE.Clock();
+            var mouse = new THREE.Vector2();
+            var mixer;
+            var selectedObjects = [];
+            var raycaster = new THREE.Raycaster();
+            init();
+            animate();
+
+            function init() {
+
+
+ 
+                container = document.createElement('div');
+                document.body.appendChild(container);
+
+                camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 5000);
+                camera.position.set(2000, 500, 40);
+                this.camera.lookAt(0, 0, 0);
+
+                scene = new THREE.Scene();
+                // scene.background = new THREE.Color( 0xa0a0a0 );
+                // scene.fog = new THREE.Fog( 0xa0a0a0, 200, 1000 );
+
+                var img1=document.getElementById("img1");
+                var img2=document.getElementById("img2");
+                var img3=document.getElementById("img3");
+                var button2=document.getElementById("button2");
+                var juti1=document.getElementById("juti1");
+                var wanbi=document.getElementById("wanbi");
+                var stext=document.getElementById("stext").vaule;
+                console.log(stext);
+                img1.onclick=function(){
+                    img1.style.border="3px solid #2ED";
+                    img1.style.borderRadius="50px";
+                    img2.style.border="none";
+                    img3.style.border="none";
+                }
+                img2.onclick=function(){
+                    img2.style.border="3px solid #2ED";
+                    img2.style.borderRadius="50px";
+                    img1.style.border="none";
+                    img3.style.border="none";
+                }
+                img3.onclick=function(){
+                    img3.style.border="3px solid #2ED";
+                    img3.style.borderRadius="50px";
+                    img1.style.border="none";
+                    img2.style.border="none";
+                }
+                button2.onclick=function(){
+                    document.getElementById("juti1").style="display:none";
+                    juti1.style="display:none";
+                    wanbi.style="flex";
+                    // alert(stext.vaule);
+                }
+                // juti1.onclick=function(){
+                  
+                    
+                // }
+
+
+                renderer = new THREE.WebGLRenderer({ antialias: true });
+                renderer.setPixelRatio(window.devicePixelRatio);
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.shadowMap.enabled = true;
+                container.appendChild(renderer.domElement);
+
+                controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls.target.set(0, 500, 0);
+                controls.update();
+                controls.enableDamping = true;
+                controls.dampingFactor = 0.35;
+                controls.minDistance = 0;
+                controls.maxDistance = 2000;
+                controls.maxPolarAngle = 0;
+                controls.minPolarAngle=Math.PI / 2;
+
+
+
+
+
+
+                let ambient = new THREE.AmbientLight(0xffffff, 1); //AmbientLight,影响整个场景的光源
+                ambient.position.set(0, 0, 0);
+                scene.add(ambient);
+                //添加平行光,平行光类似于太阳光
+                let directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);//模拟远处类似太阳的光源
+                directionalLight.position.set(0, 1000, 0);
+                scene.add(directionalLight);
+                //设置点光源
+                let pointLight1 = new THREE.PointLight(0xffffff, 0.8);
+                pointLight1.position.set(0, 0, 0);
+                scene.add(pointLight1);
+
+                var pointColor = "#ffffff";
+                let spotLight = new THREE.SpotLight(pointColor);
+                spotLight.position.set(400, 800, 500);
+                spotLight.castShadow = true;
+                spotLight.shadowCameraNear = 2;
+                spotLight.shadowCameraFar = 800;
+                spotLight.shadowCameraFov = 30;
+
+                // spotLight.target = plane;//光照照向地面
+                spotLight.distance = 0;
+                spotLight.angle = 0.4;
+                scene.add(spotLight);
+
+
+
+
+                outlinePass = new THREE.OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
+                outlinePass.edgeStrength = 8;//包围线浓度
+                outlinePass.edgeGlow = 2;//边缘线范围
+                outlinePass.edgeThickness = 2;//边缘线浓度
+                outlinePass.pulsePeriod = 2;//包围线闪烁评率
+                outlinePass.visibleEdgeColor.set('#ba341a');//包围线颜色
+                outlinePass.hiddenEdgeColor.set('#0000cc');//被遮挡的边界线颜色
+
+                renderPass = new THREE.RenderPass(scene, camera);
+                composer = new THREE.EffectComposer(renderer);
+                composer.addPass(renderPass);
+                composer.addPass(outlinePass);
+                // array.push(cube);
+
+
+                outlinePass.selectedObjects = array;
+
+
+              
+               
+                var loadero = new THREE.OBJLoader();//在init函数中，创建loader变量，用于导入模型
+                loadero.load('models/guzhang.obj', function (obj) {//第一个表示模型路径，第二个表示完成导入后的回调函数，一般我们需要在这个回调函数中将导入的模型添加到场景中
+
+                    var material = new THREE.MeshLambertMaterial({ color: 0xc05600, transparent: true, opacity: 1 });
+                    obj.children.forEach(function (child) {
+                        //给每个子元素赋值纹理
+                        child.material = material;
+                        //更新每个子元素的面和顶点的法向量
+                        child.geometry.computeFaceNormals();
+                        child.geometry.computeVertexNormals();
+                        child.name="syr"
+                    });
+                    obj.scale.set(20,20,20);
+                    obj.position.set(0,0,0);
+                    obj.rotation.set(0,-Math.PI / 3,0);
+                    scene.add(obj);//将导入的模型添加到场景中
+                    
+         
+                    
+                    
+                });
+                var loadero = new THREE.OBJLoader();//在init函数中，创建loader变量，用于导入模型
+                loadero.load('models/guzhangs.obj', function (obj) {//第一个表示模型路径，第二个表示完成导入后的回调函数，一般我们需要在这个回调函数中将导入的模型添加到场景中
+
+                    var material = new THREE.MeshLambertMaterial({ color: 0xc05600, transparent: true, opacity: 1 });
+                    obj.children.forEach(function (child) {
+                        //给每个子元素赋值纹理
+                        child.material = material;
+                        //更新每个子元素的面和顶点的法向量
+                        child.geometry.computeFaceNormals();
+                        child.geometry.computeVertexNormals();
+                        child.name="syr"
+                    });
+                    obj.scale.set(20,20,20);
+                    obj.position.set(0,0,0);
+                    obj.rotation.set(0,-Math.PI / 3,0);
+                    scene.add(obj);//将导入的模型添加到场景中
+                    
+                    array.push(obj);
+                    
+                    
+                });
+
+
+                    window.addEventListener('resize', onWindowResize, false);
+
+                    // window.addEventListener( 'mousemove', onTouchMove );
+                   
+                    renderer.setClearColor(0x000080, 0.3);
+                    window.onload = function () {
+
+                    outlinePass.selectedObjects = array;
+                   
+                    mytime();
+                    mytime1();
+                   
+             
+
+                }
+                  
+                    // // stats
+                    // stats = new Stats();
+                    // container.appendChild(stats.dom);
+
+                }
+            
+            function onWindowResize() {
+
+                        camera.aspect = window.innerWidth / window.innerHeight;
+                        camera.updateProjectionMatrix();
+
+                        renderer.setSize(window.innerWidth, window.innerHeight);
+
+                    }
+            function mytime() {
+                        var t = null;
+                        t = setTimeout(mytime, 1000);//開始运行
+                        clearTimeout(t);//清除定时器
+                        dt = new Date();
+                        var y = dt.getFullYear();
+                        var mt = dt.getMonth() + 1;
+                        var day = dt.getDate();
+                        var h = dt.getHours();//获取时
+                        var m = dt.getMinutes();//获取分
+                        var s = dt.getSeconds();//获取秒
+                        document.getElementById("mytime").innerHTML = y + "年" + mt + "月" + day + "日" + h + "时" + m + "分" + s + "秒";
+                        t = setTimeout(mytime, 1000); //设定定时器，循环运行
+
+                    }
+                    function mytime1() {
+                        dt = new Date();
+                        var y = dt.getFullYear();
+                        var mt = dt.getMonth() + 1;
+                        var day = dt.getDate();
+                        var h = dt.getHours();//获取时
+                        var m = dt.getMinutes();//获取分
+                        var s = dt.getSeconds();//获取秒
+                        document.getElementById("mytime1").innerHTML = y + "年" + mt + "月" + day + "日" + h + "时" + m + "分" + s + "秒";
+                 
+                    }
+                  
+
+            function animate() {
+
+                requestAnimationFrame(animate);
+                scene.rotation.y+= 0.001;
+                // scene.traverse(function (obj) {
+                //     if (obj.name === "syr") {
+                //         console.log(obj);
+                //        obj.rotation.y+= 0.01;
+                //        var delta = clock.getDelta();
+                //   }
+                // })
+                if (mixer) mixer.update(delta);
+                renderer.render(scene, camera);
+                composer.render();
+                        // composer2.render();
+                    }
+
+        </script>
+
+</body>
+
+</html>

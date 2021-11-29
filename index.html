@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>仓储管理系统</title>
+    <!-- layui -->
+    <link rel="stylesheet" href="layui/css/layui.css">
+    <link rel="stylesheet" href="css/lib.css">
+    <link rel="stylesheet" href="css/road.css">
+
+    <style media="screen">
+      body{
+        background: url(img/bg_1.png);
+        background-size: cover;
+      }
+      .fn_1{
+        width: 250px; height: 220px;
+        background: url(img/fn_1.png);
+        background-size: cover;
+      }
+      .fn_1:hover{
+        background: url(img/fn_1_h.png);
+        background-size: cover;
+      }
+
+      .fn_2{
+        width: 250px; height: 220px;
+        background: url(img/fn_2.png);
+        background-size: cover;
+      }
+      .fn_2:hover{
+        background: url(img/fn_2_h.png);
+        background-size: cover;
+      }
+      .fn_3{
+        width: 250px; height: 220px;
+        background: url(img/fn_3.png);
+        background-size: cover;
+      }
+      .fn_3:hover{
+        background: url(img/fn_3_h.png);
+        background-size: cover;
+      }
+
+      .sci-wheel{
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100px;
+      }
+
+      .header{
+        width: 100%; height: 100px; line-height: 100px;
+        
+        background:url(img/head_bg.png) no-repeat center center
+      }
+      .header img{
+        float: left;
+        margin: 10px 10px;
+        width: 70px;
+      }
+      .header p{
+        text-align: center;
+        font-size: 30px; color: rgb(7, 255, 234);
+        letter-spacing: 3px;
+      }
+      .header .home-btn {
+        float: right;
+        /* margin-top: 20px; */
+        width:150px;
+        height: 74px;
+        color: rgb(7, 255, 234);;
+
+        background-size: 45% 45%;
+        cursor: pointer;
+      }
+      .center{
+        position: absolute;
+        top: 0; bottom: 0; left: 0; right: 0;
+        margin: auto;
+        width: 930px; height: 250px;
+        /* bottom: 300px; */
+      }
+      .center .list{
+        display: block;
+        float: left;
+        margin: 0 30px;
+      }
+      .center .list p{
+        text-align: center;
+        color: #00BAF1;
+        font-size: 18px;
+        margin-top: 240px;
+      }
+      /* .center .list img{
+        width: 250px;
+        margin: 0 30px;
+      } */
+    </style>
+
+
+  </head>
+  <body>
+
+
+    <div class="header">
+      <div class="home-btn">欢迎您，张军</div>
+
+<!--      <img src="res\logo.png" alt="">-->
+      <p style="margin-left:20px;font-size: 24px;">项目选择</p>
+    </div>
+
+
+
+    <div class="center">
+      <a class="list fn_1 moveUpDownFla1" href="index2.html">
+        <!-- <img src="images\fn_1.png" alt=""> -->
+        <p>项目A</p>
+      </a>
+      <a class="list fn_2 moveUpDownFla2" href="index2.html">
+        <!-- <img src="images\fn_2.png" alt=""> -->
+        <p>项目B</p>
+      </a>
+      <a class="list fn_3 moveUpDownFla1" href="index2.html">
+        <!-- <img src="images\fn_3.png" alt=""> -->
+        <p>项目C</p>
+      </a>
+    </div>
+
+    <!--流星-->
+		<div class="liuxing liuxing1 liuxingFla"></div>
+		<div class="liuxing liuxing2 liuxingFla2"></div>
+		<div class="liuxing liuxing3 liuxingFla3"></div>
+		<div class="liuxing liuxing4 liuxingFla4"></div>
+  </body>
+
+  <!-- layui -->
+  <script type="text/javascript" src="layui/layui.js"></script>
+</html>
