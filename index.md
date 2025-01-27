@@ -3,12 +3,12 @@
 layout: home
 
 hero:
-  name: "My Awesome Project"
-  text: "A VitePress Site"
-  tagline: My great project tagline
+  name: "YanRongShi's Blog"
+ ## text: "积硅步，致千里"
+  tagline: 积硅步，致千里
   actions:
     - theme: brand
-      text: Markdown Examples
+      text: 关于我
       link: /markdown-examples
     - theme: alt
       text: API Examples
