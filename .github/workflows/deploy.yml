@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest  # 使用最新的 Ubuntu 系统作为构建环境
 
     steps:
-      # 拉取代码到 GitHub Actions 的虚拟环境中
+      # 拉取代码到 GitHub Actions 的虚拟环境中s
       - uses: actions/checkout@v3
 
       # 设置 Node.js 环境
