@@ -1,0 +1,33 @@
+name: Deploy VitePress site to Pages
+
+on:
+  push:
+    branches:
+      - main  # 当 main 分支有推送时触发
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # 使用最新的 Ubuntu 系统作为构建环境
+
+    steps:
+      # 拉取代码到 GitHub Actions 的虚拟环境中
+      - uses: actions/checkout@v3
+
+      # 设置 Node.js 环境
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16  # 使用 Node.js 16
+          cache: 'npm'      # 缓存 npm 依赖，加快构建速度
+
+      # 安装项目依赖
+      - run: npm install
+
+      # 构建 VitePress 项目
+      - run: npm run docs:build
+
+      # 使用 peaceiris/actions-gh-pages 将构建结果部署到 GitHub Pages
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # GitHub 提供的 token，无需额外配置
+          publish_dir: docs/.vitepress/dist         
